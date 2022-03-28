@@ -733,6 +733,7 @@ progress {
   padding-right: calc(var(--bs-gutter-x) * 0.5);
   padding-left: calc(var(--bs-gutter-x) * 0.5);
   margin-top: var(--bs-gutter-y);
+  align-self: center;
 }
 
 .col {
@@ -11641,10 +11642,4 @@ header.masthead .post-heading .meta a {
   .post-preview > a > .post-title {
     font-size: 2.25rem;
   }
-}
-
-.container.register {
-  display: flex;
-  height: 100vh;
-  overflow: hidden;
 }

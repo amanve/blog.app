@@ -2,6 +2,8 @@ from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin
+from flask_security.forms import RegisterForm
+from wtforms import StringField
 
 # Create App/Configurations
 app = Flask(__name__)
@@ -14,7 +16,7 @@ app.config['SECRET_KEY'] = 'mysecret!'
 
 # Flask Security Configs
 app.config['SECURITY_REGISTERABLE'] = True
-app.config['SECURiTY_PASSWORD_SALT'] = 'somesaltforapp!'
+app.config['SECURITY_PASSWORD_SALT'] = 'somesaltforapp!'
 app.config['SECURITY_SEND_REGISTER_EMAIL'] = False
 
 # Database connection/migrations
@@ -47,9 +49,14 @@ class User(db.Model, UserMixin):
                             backref=db.backref('users', lazy='dynamic'))
 
 
+class ExtendRegisterForm(RegisterForm):
+    name = StringField('Name')
+    username = StringField('Username')
+
+
 # Setup Flask Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
-security = Security(app, user_datastore)
+security = Security(app, user_datastore, register_form=ExtendRegisterForm)
 
 
 @app.route('/')
