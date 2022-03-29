@@ -1,3 +1,5 @@
+from datetime import datetime
+from email.policy import default
 from flask import Flask, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -6,6 +8,7 @@ from flask_security.forms import RegisterForm, LoginForm
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField
 from wtforms.validators import InputRequired
+from datetime import datetime
 
 # Create App/Configurations
 app = Flask(__name__)
@@ -57,6 +60,7 @@ class Post(db.Model):
     heading = db.Column(db.String(50), unique=True, nullable=False)
     subHeading = db.Column(db.String(100))
     body = db.Column(db.Text(), nullable=False)
+    dateCreated = db.Column(db.DateTime(), default=datetime.utcnow)
 
 
 class ExtendRegisterForm(RegisterForm):
@@ -109,7 +113,8 @@ def add_post():
     if form.validate_on_submit():
         new_post = Post(heading=form.heading.data,
                         subHeading=form.subHeading.data,
-                        body=form.body.data)
+                        body=form.body.data,
+                        dateCreated=datetime.now())
         db.session.add(new_post)
         db.session.commit()
 
