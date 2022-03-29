@@ -1,9 +1,10 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin
 from flask_security.forms import RegisterForm, LoginForm
-from wtforms import StringField
+from flask_wtf import FlaskForm
+from wtforms import StringField, TextAreaField
 from wtforms.validators import InputRequired
 
 # Create App/Configurations
@@ -55,7 +56,7 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     heading = db.Column(db.String(50), unique=True, nullable=False)
     subHeading = db.Column(db.String(100))
-    body = db.Column(db.String(), nullable=False)
+    body = db.Column(db.Text(), nullable=False)
 
 
 class ExtendRegisterForm(RegisterForm):
@@ -65,6 +66,12 @@ class ExtendRegisterForm(RegisterForm):
 
 class ExtendLoginForm(LoginForm):
     email = StringField('Username or Email Address', [InputRequired()])
+
+
+class NewPost(FlaskForm):
+    heading = StringField('Heading')
+    subHeading = StringField('Sub-Heading')
+    body = TextAreaField('Body')
 
 
 # Setup Flask Security
@@ -92,7 +99,23 @@ def contact():
 
 @app.route('/post')
 def post():
+
     return render_template('post.html')
+
+
+@app.route('/add_post', methods=['GET', 'POST'])
+def add_post():
+    form = NewPost()
+    if form.validate_on_submit():
+        new_post = Post(heading=form.heading.data,
+                        subHeading=form.subHeading.data,
+                        body=form.body.data)
+        db.session.add(new_post)
+        db.session.commit()
+
+        return redirect(url_for('post'))
+
+    return render_template('add_post.html', form=form)
 
 
 if __name__ == '__main__':
