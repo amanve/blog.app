@@ -84,7 +84,8 @@ security = Security(app,
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    posts = Post.query.all()
+    return render_template('index.html', posts=posts)
 
 
 @app.route('/about')
@@ -99,7 +100,6 @@ def contact():
 
 @app.route('/post')
 def post():
-
     return render_template('post.html')
 
 
