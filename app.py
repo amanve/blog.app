@@ -25,7 +25,7 @@ app.config['SECURITY_USER_IDENTITY_ATTRIBUTES'] = ('username', 'email')
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-# Define models
+# Define models of used in the app
 roles_users = db.Table(
     'roles_users', db.Column('user_id', db.Integer(), db.ForeignKey('user.id')),
     db.Column('role_id', db.Integer(), db.ForeignKey('role.id')))
@@ -49,6 +49,13 @@ class User(db.Model, UserMixin):
     roles = db.relationship('Role',
                             secondary=roles_users,
                             backref=db.backref('users', lazy='dynamic'))
+
+
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    heading = db.Column(db.String(50), unique=True, nullable=False)
+    subHeading = db.Column(db.String(100))
+    body = db.Column(db.String(), nullable=False)
 
 
 class ExtendRegisterForm(RegisterForm):
