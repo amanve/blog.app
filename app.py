@@ -109,9 +109,11 @@ def contact():
     return render_template('contact.html')
 
 
-@app.route('/post')
-def post():
-    return render_template('post.html')
+# @app.route('/post')
+@app.route('/post/<post_id>')
+def post(post_id):
+    post = Post.query.get(int(post_id))
+    return render_template('post.html', post=post)
 
 
 @app.route('/add_post', methods=['GET', 'POST'])
@@ -130,6 +132,6 @@ def add_post():
     return render_template('add_post.html', form=form)
 
 
-#Execcute App
+#Execute App
 if __name__ == '__main__':
     app.run()

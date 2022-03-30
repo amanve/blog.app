@@ -25,7 +25,7 @@
                 <!-- Post preview-->
                 <div class="post-preview">
                     {% for post in posts %}
-                    <a href="post.html">
+                    <a href="{{url_for('post',post_id=post.id)}}">
                         <h2 class="post-title">{{post.heading}}</h2>
                         <h3 class="post-subtitle">{{post.subHeading}}</h3>
                     </a>
