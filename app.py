@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin
+from flask_security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, current_user
 from flask_security.forms import RegisterForm, LoginForm
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField
@@ -53,6 +53,8 @@ class User(db.Model, UserMixin):
                             secondary=roles_users,
                             backref=db.backref('users', lazy='dynamic'))
 
+    comments = db.relationship('Comments', backref='users', lazy='dynamic')
+
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -60,6 +62,8 @@ class Post(db.Model):
     subHeading = db.Column(db.String(100))
     body = db.Column(db.Text(), nullable=False)
     dateCreated = db.Column(db.DateTime(), default=datetime.utcnow)
+
+    comments = db.relationship('Comments', backref='post', lazy='dynamic')
 
 
 class Comments(db.Model):
@@ -70,6 +74,7 @@ class Comments(db.Model):
     dateCreated = db.Column(db.DateTime())
 
 
+#Custom Forms
 class ExtendRegisterForm(RegisterForm):
     name = StringField('Name')
     username = StringField('Username')
@@ -83,6 +88,10 @@ class NewPost(FlaskForm):
     heading = StringField('Heading')
     subHeading = StringField('Sub-Heading')
     body = TextAreaField('Body')
+
+
+class NewComment(FlaskForm):
+    comment = TextAreaField('Comment')
 
 
 # Setup Flask Security
@@ -119,10 +128,26 @@ def contact():
 
 
 # @app.route('/post')
-@app.route('/post/<post_id>')
+@app.route('/post/<post_id>', methods=['GET', 'POST'])
 def post(post_id):
+    form = NewComment()
     post = Post.query.get(int(post_id))
-    return render_template('post.html', post=post)
+
+    if form.validate_on_submit():
+        comment = Comments(user_id=current_user.id,
+                           comment=form.comment.data,
+                           dateCreated=datetime.now())
+        post.comments.append(comment)
+        db.session.commit()
+
+        return redirect(url_for('post', post_id=post.id))
+
+    comments = Comments.query.filter_by(post_id=post_id).order_by(
+        desc(Comments.dateCreated)).all()
+
+    # return f'''Comment: {form.comment.data}'''
+
+    return render_template('post.html', post=post, form=form, comments=comments)
 
 
 @app.route('/add_post', methods=['GET', 'POST'])
@@ -136,7 +161,7 @@ def add_post():
         db.session.add(new_post)
         db.session.commit()
 
-        return redirect(url_for('post'))
+        return redirect(url_for('index'))
 
     return render_template('add_post.html', form=form)
 
