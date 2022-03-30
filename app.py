@@ -86,6 +86,15 @@ security = Security(app,
                     login_form=ExtendLoginForm)
 
 
+#Custom Templates
+@app.template_filter('datetime_format')
+def datetime_format(value, format='%d %B,%Y'):
+    if value == None:
+        return None
+    return value.strftime(format)
+
+
+#Register Routes
 @app.route('/')
 def index():
     posts = Post.query.all()
