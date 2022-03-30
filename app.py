@@ -7,6 +7,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField
 from wtforms.validators import InputRequired
 from datetime import datetime
+from sqlalchemy import desc
 
 # Create App/Configurations
 app = Flask(__name__)
@@ -95,7 +96,7 @@ def datetime_format(value, format='%d %B,%Y'):
 #Register Routes
 @app.route('/')
 def index():
-    posts = Post.query.all()
+    posts = Post.query.order_by(desc(Post.dateCreated)).all()
     return render_template('index.html', posts=posts)
 
 
