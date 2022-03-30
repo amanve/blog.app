@@ -1,5 +1,3 @@
-from datetime import datetime
-from email.policy import default
 from flask import Flask, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -132,5 +130,6 @@ def add_post():
     return render_template('add_post.html', form=form)
 
 
+#Execcute App
 if __name__ == '__main__':
     app.run()
