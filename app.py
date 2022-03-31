@@ -1,14 +1,14 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, current_user
 from flask_security.forms import RegisterForm, LoginForm
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField
+from wtforms import StringField, TextAreaField, EmailField, TelField
 from wtforms.validators import InputRequired
 from datetime import datetime
 from sqlalchemy import desc
-
+import pandas as pd
 # Create App/Configurations
 app = Flask(__name__)
 # Database Configs
@@ -94,6 +94,13 @@ class NewComment(FlaskForm):
     comment = TextAreaField('Comment')
 
 
+class ContactUs(FlaskForm):
+    name = StringField('Name')
+    email = EmailField('Email')
+    telephone = TelField('Telephone')
+    message = StringField('Message')
+
+
 # Setup Flask Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app,
@@ -122,9 +129,24 @@ def about():
     return render_template('about.html')
 
 
-@app.route('/contact')
+@app.route('/contact', methods=['GET', 'POST'])
 def contact():
-    return render_template('contact.html')
+    form = ContactUs()
+
+    if form.validate_on_submit():
+        name = request.form['name']
+        email = request.form['email']
+        telephone = request.form['telephone']
+        message = request.form['message']
+        res = pd.DataFrame({
+            'name': [name],
+            'email': [email],
+            'telephone': [telephone],
+            'message': [message]
+        })
+        res.to_csv('./contactusMessage.csv', mode='a', index=False)
+
+    return render_template('contact.html', form=form)
 
 
 # @app.route('/post')

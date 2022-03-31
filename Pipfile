@@ -10,6 +10,7 @@ flask-sqlalchemy = "*"
 flask-migrate = "*"
 bcrypt = "*"
 wtforms = {extras = ["email"], version = "*"}
+pandas = "*"
 
 [dev-packages]
 
