@@ -95,10 +95,10 @@ class NewComment(FlaskForm):
 
 
 class ContactUs(FlaskForm):
-    name = StringField('Name')
-    email = EmailField('Email')
-    telephone = TelField('Telephone')
-    message = StringField('Message')
+    name = StringField('Name', [InputRequired()])
+    email = EmailField('Email', [InputRequired()])
+    telephone = TelField('Telephone', [InputRequired()])
+    message = StringField('Message', [InputRequired()])
 
 
 # Setup Flask Security
