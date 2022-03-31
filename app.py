@@ -9,11 +9,13 @@ from wtforms.validators import InputRequired
 from datetime import datetime
 from sqlalchemy import desc
 import pandas as pd
+
 # Create App/Configurations
 app = Flask(__name__)
 # Database Configs
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['POSTS_PER_PAGE'] = 10
 
 # Flask Config
 app.config['SECRET_KEY'] = 'mysecret!'
@@ -120,8 +122,18 @@ def datetime_format(value, format='%d %B,%Y'):
 #Register Routes
 @app.route('/')
 def index():
-    posts = Post.query.order_by(desc(Post.dateCreated)).all()
-    return render_template('index.html', posts=posts)
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.order_by(desc(Post.dateCreated)).paginate(
+        page, app.config['POSTS_PER_PAGE'], True)
+    next_url = url_for('index', page=posts.next_num) \
+        if posts.has_next else None
+    prev_url = url_for('index', page=posts.prev_num) \
+        if posts.has_prev else None
+
+    return render_template('index.html',
+                           posts=posts,
+                           next_url=next_url,
+                           prev_url=prev_url)
 
 
 @app.route('/about')
@@ -171,8 +183,6 @@ def post(post_id):
 
     comments = Comments.query.filter_by(post_id=post_id).order_by(
         desc(Comments.dateCreated)).all()
-
-    # return f'''Comment: {form.comment.data}'''
 
     return render_template('post.html', post=post, form=form, comments=comments)
 

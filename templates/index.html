@@ -24,7 +24,7 @@
             <div class="col-md-10 col-lg-8 col-xl-7">
                 <!-- Post preview-->
                 <div class="post-preview">
-                    {% for post in posts %}
+                    {% for post in posts.items %}
                     <a href="{{url_for('post',post_id=post.id)}}">
                         <h2 class="post-title">{{post.heading}}</h2>
                         <h3 class="post-subtitle">{{post.subHeading}}</h3>
@@ -40,8 +40,15 @@
                 </div>
 
                 <!-- Pager-->
-                <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Older
-                        Posts →</a></div>
+                <div class="d-flex justify-content-end mb-4">
+                    {% if prev_url %}
+                    <a class="btn btn-primary text-uppercase" href="{{ prev_url }}">Newer posts</a>
+                    {% endif %}
+                    {% if next_url %}
+                    <a class="btn btn-primary text-uppercase" href="{{ next_url }}">Older posts</a>
+                    {% endif %}
+                </div>
+
             </div>
         </div>
     </div>
