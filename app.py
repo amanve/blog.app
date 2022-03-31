@@ -149,6 +149,8 @@ def contact():
         # Todo
         """ Delete data as per datetime - need to figure out """
 
+        return redirect(url_for('contact'))
+
     return render_template('contact.html', form=form)
 
 
