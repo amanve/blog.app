@@ -142,9 +142,12 @@ def contact():
             'name': [name],
             'email': [email],
             'telephone': [telephone],
-            'message': [message]
+            'message': [message],
+            'datetime': [datetime.strftime(datetime.now(), '''%d/%m/%y''')]
         })
         res.to_csv('./contactusMessage.csv', mode='a', index=False)
+        # Todo
+        """ Delete data as per datetime - need to figure out """
 
     return render_template('contact.html', form=form)
 
