@@ -36,30 +36,41 @@
 
 
     <!-- Reply -->
-    <div class="container px-4 px-lg-5">
-        <div class="row gx-4 gx-lg-5 justify-content-center mb-4">
-            <h3 class="">Comments &mdash; <span>{{comments|length}}</span></h3>
+    <div class="container px-lg-5">
+        <div class="row  justify-content-center ">
+            <h3 class="">Comments &mdash; <span>{{comments.total}}</span></h3>
         </div>
     </div>
-    {% for comment in comments %}
-    <div class="container px-4 px-lg-5">
-        <div class="row gx-4 gx-lg-5 justify-content-center mb-4">
-
-            <!-- Divider-->
-            <hr class="my-4" />
-            <div class="row">
-                <div class="col px-4">
-                    {{ comment.comment }}
-                </div>
-                <div class="col">
-                    <i class="fa-solid fa-calendar"></i> {{comment.dateCreated|datetime_format}} &nbsp;
-                    <br />
-                    <i class="fa-solid fa-user"></i> {{comment.users.username}}
-                </div>
+    {% for comment in comments.items %}
+    <div class="container px-lg-5">
+        <!-- Divider-->
+        <hr class="my-4" />
+        <div class="d-flex flex-column mb-3">
+            <div class="me-auto p-2">
+                {{ comment.comment }}
+            </div>
+            <div class="ms-auto p-2">
+                <i class="fa-solid fa-calendar"></i> {{comment.dateCreated|datetime_format}} &nbsp;
+                <br />
+                <i class="fa-solid fa-user"></i> {{comment.users.username}}
             </div>
         </div>
     </div>
     {% endfor %}
+
+    <!-- Pager -->
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center mb-4">
+            <div class="d-flex justify-content-between mb-4">
+                {% if next_url %}
+                <a class="btn btn-primary text-uppercase" href="{{ next_url }}">Old Comments</a>
+                {% endif %}
+                {% if prev_url %}
+                <a class="btn btn-primary text-uppercase" href="{{ prev_url }}">New Comments</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 
 
     {% if current_user.active %}
@@ -71,7 +82,8 @@
             <form method="POST" role="form" action="">
                 {{form.csrf_token}}
                 <div class="form-group mb-4">
-                    {{ form.comment(class="form-control", placeholder="Leave a comment here")}}
+                    {{ form.comment.label }}
+                    {{ form.comment(class="form-control", placeholder="Leave a comment here") }}
                 </div>
                 <div class="mb-4">
                     <button type="submit" class="btn btn-primary">
