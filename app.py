@@ -7,14 +7,15 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, EmailField, TelField
 from wtforms.validators import InputRequired
 from datetime import datetime
-from sqlalchemy import desc
+from sqlalchemy import desc, MetaData
 from sqlalchemy.ext.hybrid import hybrid_property
 import pandas as pd
 
 # Create App/Configurations
 app = Flask(__name__)
 # Database Configs
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
+app.config[
+    'SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:password@localhost/amve_blog'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['POSTS_PER_PAGE'] = 10
 app.config['COMMENTS_PER_PAGE'] = 5
@@ -28,9 +29,19 @@ app.config['SECURITY_PASSWORD_SALT'] = 'somesaltforapp!'
 app.config['SECURITY_SEND_REGISTER_EMAIL'] = False
 app.config['SECURITY_USER_IDENTITY_ATTRIBUTES'] = ('username', 'email')
 
+#Custom DB Naming Convention
+convention = {
+    "ix": 'ix_%(column_0_label)s',
+    "uq": "uq_%(table_name)s_%(column_0_name)s",
+    "ck": "ck_%(table_name)s_%(constraint_name)s",
+    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+    "pk": "pk_%(table_name)s"
+}
+
 # Database connection/migrations
 db = SQLAlchemy(app)
-migrate = Migrate(app, db)
+metadata = MetaData(naming_convention=convention)
+migrate = Migrate(app, db, metadata=metadata)
 
 # Define models of used in the app
 roles_users = db.Table(

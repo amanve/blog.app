@@ -11,6 +11,7 @@ flask-migrate = "*"
 bcrypt = "*"
 wtforms = {extras = ["email"], version = "*"}
 pandas = "*"
+mysql-connector-python = "*"
 
 [dev-packages]
 
