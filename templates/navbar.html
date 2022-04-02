@@ -12,6 +12,15 @@
                 <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{url_for('about')}}">About</a></li>
                 <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{url_for('contact')}}">Contact</a>
                 </li>
+                {% if current_user.active %}
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4"
+                        href="{{url_for_security('logout')}}">Logout</a>
+                </li>
+                {% else %}
+                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4"
+                        href="{{url_for_security('login')}}">Login</a>
+                </li>
+                {% endif %}
             </ul>
         </div>
     </div>

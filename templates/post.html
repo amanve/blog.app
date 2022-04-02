@@ -38,7 +38,7 @@
     <!-- Reply -->
     <div class="container px-lg-5">
         <div class="row  justify-content-center ">
-            <h3 class="">Comments &mdash; <span>{{comments.total}}</span></h3>
+            <h3 class="">Comments &mdash; <span>{{ comments.total }}</span></h3>
         </div>
     </div>
     {% for comment in comments.items %}
@@ -50,7 +50,7 @@
                 {{ comment.comment }}
             </div>
             <div class="ms-auto p-2">
-                <i class="fa-solid fa-calendar"></i> {{comment.dateCreated|datetime_format}} &nbsp;
+                <i class="fa-solid fa-calendar"></i> {{ comment.dateCreated|datetime_format }} &nbsp;
                 <br />
                 <i class="fa-solid fa-user"></i> {{comment.users.username}}
             </div>

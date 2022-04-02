@@ -1,7 +1,8 @@
 from flask import Flask, render_template, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, current_user
+from flask_security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, \
+     current_user, login_required
 from flask_security.forms import RegisterForm, LoginForm
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, EmailField, TelField
@@ -187,6 +188,7 @@ def post(post_id):
 
 
 @app.route('/add_post', methods=['GET', 'POST'])
+@login_required
 def add_post():
     form = NewPost()
     if form.validate_on_submit():
