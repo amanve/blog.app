@@ -58,8 +58,8 @@ class Role(db.Model, RoleMixin):
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
-    email = db.Column(db.String(), unique=True)
-    password = db.Column(db.String())
+    email = db.Column(db.String(80), unique=True)
+    password = db.Column(db.String(300))
     username = db.Column(db.String(80), unique=True)
     description = db.Column(db.String(1000))
     active = db.Column(db.Boolean())
@@ -68,6 +68,7 @@ class User(db.Model, UserMixin):
                             secondary=roles_users,
                             backref=db.backref('users', lazy='dynamic'))
 
+    posts = db.relationship('Post', backref='users', lazy='dynamic')
     comments = db.relationship('Comments', backref='users', lazy='dynamic')
 
 
@@ -77,6 +78,8 @@ class Post(db.Model):
     subHeading = db.Column(db.String(100))
     body = db.Column(db.Text(), nullable=False)
     dateCreated = db.Column(db.DateTime(), default=datetime.utcnow)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     comments = db.relationship('Comments', backref='post', lazy='dynamic')
 
@@ -163,6 +166,7 @@ def post(post_id):
         db.session.commit()
 
         return redirect(url_for('post', post_id=post.id))
+
     comments = Comments.query.filter_by(post_id=post_id).order_by(
         desc(Comments.dateCreated)).paginate(comments_page,
                                              app.config['COMMENTS_PER_PAGE'],
@@ -189,7 +193,8 @@ def add_post():
         new_post = Post(heading=form.heading.data,
                         subHeading=form.subHeading.data,
                         body=form.body.data,
-                        dateCreated=datetime.now())
+                        dateCreated=datetime.now(),
+                        user_id=current_user.id)
         db.session.add(new_post)
         db.session.commit()
 
