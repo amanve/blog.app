@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, \
-     current_user, login_required
+     current_user, login_required, roles_required, roles_accepted
 from flask_security.forms import RegisterForm, LoginForm
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, EmailField, TelField
