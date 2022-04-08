@@ -1,12 +1,15 @@
-from app.main.forms import ContactUs, NewComment, NewPost
-from flask import (url_for, request, render_template, current_app, redirect)
+from datetime import datetime
+
+import pandas as pd
+from flask import current_app, redirect, render_template, request, url_for
 from flask_security import current_user, login_required
-from . import main
+from sqlalchemy import desc
+
+from app.main.forms import ContactUs, NewComment, NewPost
+
 from .. import db
 from ..models import Comments, Post
-from sqlalchemy import desc
-from datetime import datetime
-import pandas as pd
+from . import main
 
 
 #Custom Templates
@@ -104,10 +107,10 @@ def contact():
             'message': [message],
             'datetime': [datetime.strftime(datetime.now(), '''%d/%m/%y''')]
         })
-        res.to_csv('../contactusMessage.csv', mode='a', index=False)
+        res.to_csv('./contactusMessage.csv', mode='a', index=False)
         # Todo
         """ Delete data as per datetime - need to figure out """
 
-        return redirect(url_for('contact'))
+        return redirect(url_for('main.contact'))
 
     return render_template('contact.html', form=form)

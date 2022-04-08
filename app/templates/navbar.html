@@ -15,15 +15,15 @@
                 <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4"
                         href="{{url_for('main.contact')}}">Contact</a>
                 </li>
-                <!-- {#% if not current_user.active %#}
+                {% if not current_user.active %}
                 <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4"
-                        href="{#{#url_for_security('main.login')#}#}">Login</a>
+                        href="{{url_for_security('login')}}">Login</a>
                 </li>
-                {#% else %#}
+                {% else %}
                 <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4"
-                        href="{#{#url_for_security('main.logout')#}#}">Logout</a>
+                        href="{{url_for_security('logout')}}">Logout</a>
                 </li>
-                {#% endif %#} -->
+                {% endif %}
             </ul>
         </div>
     </div>

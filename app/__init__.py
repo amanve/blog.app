@@ -1,8 +1,8 @@
-from flask import Flask, render_template
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from config import config
 from sqlalchemy import MetaData
-from flask_migrate import Migrate
+
+from config import config
 
 #Custom DB Naming Convention
 convention = {
@@ -15,6 +15,7 @@ convention = {
 
 # Database connection/migrations
 db = SQLAlchemy()
+
 metadata = MetaData(naming_convention=convention)
 
 
