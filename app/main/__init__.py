@@ -3,7 +3,7 @@ from flask_migrate import Migrate
 from flask_security import (Security, SQLAlchemyUserDatastore)
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
-from app.forms import (ExtendLoginForm, ExtendRegisterForm)
+
 from config import Config
 
 from flask import Blueprint

@@ -16,7 +16,6 @@ convention = {
 # Database connection/migrations
 db = SQLAlchemy()
 metadata = MetaData(naming_convention=convention)
-migrate = Migrate(app, db, metadata=metadata)
 
 
 def create_app(config_name):
