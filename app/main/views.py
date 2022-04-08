@@ -1,11 +1,10 @@
 from datetime import datetime
 
 import pandas as pd
+from app.main.forms import ContactUs, NewComment, NewPost
 from flask import current_app, redirect, render_template, request, url_for
 from flask_security import current_user, login_required
 from sqlalchemy import desc
-
-from app.main.forms import ContactUs, NewComment, NewPost
 
 from .. import db
 from ..models import Comments, Post

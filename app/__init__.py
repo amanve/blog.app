@@ -1,8 +1,7 @@
+from config import config
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
-
-from config import config
 
 #Custom DB Naming Convention
 convention = {
