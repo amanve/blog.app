@@ -3,7 +3,7 @@ import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
-class Config(object):
+class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'myseceretkey!'
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -14,10 +14,9 @@ class Config(object):
     SECURITY_SEND_REGISTER_EMAIL = False
     SECURITY_USER_IDENTITY_ATTRIBUTES = ('username', 'email')
 
-
-@staticmethod
-def init_app(app):
-    pass
+    @staticmethod
+    def init_app(app):
+        pass
 
 
 class DevelopmentConfig(Config):
