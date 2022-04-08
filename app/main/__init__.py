@@ -13,10 +13,10 @@ main = Blueprint('main', __name__)
 from . import views, errors
 
 # Setup Flask Security
-user_datastore = SQLAlchemyUserDatastore(db, User, Role)
+""" user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app,
                     user_datastore,
                     register_form=ExtendRegisterForm,
-                    login_form=ExtendLoginForm)
+                    login_form=ExtendLoginForm) """
 
 from app import models
