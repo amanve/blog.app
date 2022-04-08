@@ -12,6 +12,7 @@ bcrypt = "*"
 wtforms = {extras = ["email"], version = "*"}
 pandas = "*"
 mysql-connector-python = "*"
+isort = {extras = ["pipfile_deprecated_finder"], version = "*"}
 
 [dev-packages]
 

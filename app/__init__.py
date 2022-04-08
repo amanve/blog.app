@@ -1,12 +1,14 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
-from flask_security import (Security, SQLAlchemyUserDatastore, UserMixin,
-                            RoleMixin, current_user, login_required)
-from sqlalchemy import desc, MetaData
-import os
 import logging
+import os
 from logging.handlers import RotatingFileHandler
+
+from config import Config
+from flask import Flask
+from flask_migrate import Migrate
+from flask_security import (RoleMixin, Security, SQLAlchemyUserDatastore,
+                            UserMixin, current_user, login_required)
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import MetaData, desc
 
 # Create App/Configurations
 app = Flask(__name__)

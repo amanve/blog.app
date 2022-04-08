@@ -1,25 +1,10 @@
-from flask_security.forms import RegisterForm, LoginForm
-from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, EmailField, TelField
-from wtforms.validators import InputRequired
 from datetime import datetime
+
 import pandas as pd
-
-# Database Configs
-app.config[
-    'SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:password@localhost/amve_blog'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['POSTS_PER_PAGE'] = 10
-app.config['COMMENTS_PER_PAGE'] = 5
-
-# Flask Config
-app.config['SECRET_KEY'] = 'mysecret!'
-
-# Flask Security Configs
-app.config['SECURITY_REGISTERABLE'] = True
-app.config['SECURITY_PASSWORD_SALT'] = 'somesaltforapp!'
-app.config['SECURITY_SEND_REGISTER_EMAIL'] = False
-app.config['SECURITY_USER_IDENTITY_ATTRIBUTES'] = ('username', 'email')
+from flask_security.forms import LoginForm, RegisterForm
+from flask_wtf import FlaskForm
+from wtforms import EmailField, StringField, TelField, TextAreaField
+from wtforms.validators import InputRequired
 
 # Define models of used in the app
 roles_users = db.Table(
