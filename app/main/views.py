@@ -107,7 +107,9 @@ def contact():
             'message': [message],
             'datetime': [datetime.strftime(datetime.now(), '''%d/%m/%y''')]
         })
-        res.to_csv(['CONTACT_MSG_PATH'], mode='a', index=False)
+        res.to_csv(current_app.config['CONTACT_MSG_PATH'],
+                   mode='a',
+                   index=False)
         # Todo
         """ Delete data as per datetime - need to figure out """
 
