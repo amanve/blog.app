@@ -11,6 +11,9 @@
             <div class="form-group">
                 <label for="heading">Heading</label>
                 {{form.heading( class="form-control", placeholder="Enter Heading")}}
+                {% if form.heading.errors %}
+                <ul class="errors">{% for error in form.heading.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+                {% endif %}
             </div>
 
             <div class="form-group">

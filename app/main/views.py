@@ -79,7 +79,6 @@ def add_post():
                         user_id=current_user.id)
         db.session.add(new_post)
         db.session.commit()
-
         return redirect(url_for('main.index'))
 
     return render_template('add_post.html', form=form)
