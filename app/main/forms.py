@@ -3,6 +3,7 @@ from flask_wtf import FlaskForm
 from wtforms import EmailField, StringField, TelField, TextAreaField
 from wtforms.validators import InputRequired, ValidationError
 from ..models import Post
+from flask_pagedown.fields import PageDownField
 
 
 #Custom Forms
@@ -18,7 +19,7 @@ class ExtendLoginForm(LoginForm):
 class NewPost(FlaskForm):
     heading = StringField('Heading', [InputRequired()])
     subHeading = StringField('Sub-Heading')
-    body = TextAreaField('Body', [InputRequired()])
+    body = PageDownField('Body', [InputRequired()])
 
     def validate_heading(self, heading):
         heading_obj = Post.query.filter(Post.heading == heading.data).first()

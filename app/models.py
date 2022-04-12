@@ -1,6 +1,8 @@
 from datetime import datetime
 
 from flask_security import RoleMixin, UserMixin
+from markdown import markdown as md
+import bleach
 
 from app import db
 
@@ -37,11 +39,25 @@ class Post(db.Model):
     heading = db.Column(db.String(50), unique=True, nullable=False)
     subHeading = db.Column(db.String(100))
     body = db.Column(db.Text(), nullable=False)
+    body_html = db.Column(db.Text)
     dateCreated = db.Column(db.DateTime(), default=datetime.utcnow)
-
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     comments = db.relationship('Comments', backref='post', lazy='dynamic')
+
+    @staticmethod
+    def on_changed_body(target, value, oldvalue, initiator):
+        allowed_tags = [
+            'a', 'abbr', 'acronym', 'b', 'blockquote', 'code', 'em', 'i', 'li',
+            'ol', 'pre', 'strong', 'ul', 'h1', 'h2', 'h3', 'p'
+        ]
+        target.body_html = bleach.linkify(
+            bleach.clean(md(value, output_format='html'),
+                         tags=allowed_tags,
+                         strip=True))
+
+
+db.event.listen(Post.body, 'set', Post.on_changed_body)
 
 
 class Comments(db.Model):

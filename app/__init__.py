@@ -2,6 +2,7 @@ from config import config
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
+from flask_pagedown import PageDown
 
 import os
 import logging
@@ -18,6 +19,7 @@ convention = {
 
 # Database connection/migrations
 db = SQLAlchemy()
+pagedown = PageDown()
 
 metadata = MetaData(naming_convention=convention)
 
@@ -28,6 +30,7 @@ def create_app(config_name):
     config[config_name].init_app(app)
 
     db.init_app(app)
+    pagedown.init_app(app)
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
