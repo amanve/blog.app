@@ -42,7 +42,8 @@ def post(post_id):
     comments_page = request.args.get('comments_page', 1, type=int)
 
     if form.validate_on_submit():
-        comment = Comments(user_id=current_user.id,
+        comment = Comments(name=form.name.data,
+                           email=form.email.data,
                            comment=form.comment.data,
                            dateCreated=datetime.now())
         post.comments.append(comment)

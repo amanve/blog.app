@@ -16,9 +16,9 @@ class ExtendLoginForm(LoginForm):
 
 
 class NewPost(FlaskForm):
-    heading = StringField('Heading')
+    heading = StringField('Heading', [InputRequired()])
     subHeading = StringField('Sub-Heading')
-    body = TextAreaField('Body')
+    body = TextAreaField('Body', [InputRequired()])
 
     def validate_heading(self, heading):
         heading_obj = Post.query.filter(Post.heading == heading.data).first()
@@ -28,7 +28,9 @@ class NewPost(FlaskForm):
 
 
 class NewComment(FlaskForm):
-    comment = TextAreaField('Comment')
+    name = StringField('Name', [InputRequired()])
+    email = StringField('Email', [InputRequired()])
+    comment = TextAreaField('Comment', [InputRequired()])
 
 
 class ContactUs(FlaskForm):

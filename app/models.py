@@ -30,7 +30,6 @@ class User(db.Model, UserMixin):
                             backref=db.backref('users', lazy='dynamic'))
 
     posts = db.relationship('Post', backref='users', lazy='dynamic')
-    comments = db.relationship('Comments', backref='users', lazy='dynamic')
 
 
 class Post(db.Model):
@@ -48,6 +47,7 @@ class Post(db.Model):
 class Comments(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    name = db.Column(db.String(128), nullable=False)
+    email = db.Column(db.String(128), nullable=False)
     comment = db.Column(db.Text(1000))
     dateCreated = db.Column(db.DateTime())
