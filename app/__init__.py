@@ -3,6 +3,10 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 
+import os
+import logging
+from logging.handlers import RotatingFileHandler
+
 #Custom DB Naming Convention
 convention = {
     "ix": 'ix_%(column_0_label)s',
@@ -27,5 +31,20 @@ def create_app(config_name):
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
+
+    if not app.debug:
+        if not os.path.exists('logs'):
+            os.mkdir('logs')
+        file_handler = RotatingFileHandler('logs/_!@123eRR321@!_.log',
+                                           maxBytes=1024,
+                                           backupCount=10)
+        file_handler.setFormatter(
+            logging.Formatter(
+                '%(asctime)s %(message)s [in %(pathname)s:%(lineno)d]'))
+        file_handler.setLevel(logging.INFO)
+        app.logger.addHandler(file_handler)
+
+        app.logger.setLevel(logging.INFO)
+        app.logger.info('Blog startup')
 
     return app
