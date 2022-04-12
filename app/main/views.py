@@ -65,7 +65,8 @@ def post(post_id):
                            form=form,
                            comments=comments,
                            next_url=next_url,
-                           prev_url=prev_url)
+                           prev_url=prev_url,
+                           title=post.heading)
 
 
 @main.route('/add_post', methods=['GET', 'POST'])
