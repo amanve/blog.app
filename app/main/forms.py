@@ -31,7 +31,7 @@ class NewPost(FlaskForm):
 class NewComment(FlaskForm):
     name = StringField('Name', [InputRequired()])
     email = StringField('Email', [InputRequired()])
-    comment = TextAreaField('Comment', [InputRequired()])
+    comment = PageDownField('Comment', [InputRequired()])
 
 
 class ContactUs(FlaskForm):

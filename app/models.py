@@ -66,4 +66,19 @@ class Comments(db.Model):
     name = db.Column(db.String(128), nullable=False)
     email = db.Column(db.String(128), nullable=False)
     comment = db.Column(db.Text(1000))
+    comment_html = db.Column(db.Text(1000))
     dateCreated = db.Column(db.DateTime())
+
+    @staticmethod
+    def on_changed_body(target, value, oldvalue, initiator):
+        allowed_tags = [
+            'a', 'abbr', 'acronym', 'b', 'blockquote', 'code', 'em', 'i', 'li',
+            'ol', 'pre', 'strong', 'ul', 'h1', 'h2', 'h3', 'p'
+        ]
+        target.comment_html = bleach.linkify(
+            bleach.clean(md(value, output_format='html'),
+                         tags=allowed_tags,
+                         strip=True))
+
+
+db.event.listen(Comments.comment, 'set', Comments.on_changed_body)

@@ -6,6 +6,7 @@
 
     {% block content %}
 
+    {{ pagedown.include_pagedown() }}
 
     <!-- Page Header-->
     <header class="masthead" style="background-image: url('static/assets/img/post-bg.jpg')">
@@ -52,7 +53,11 @@
         <hr class="my-4" />
         <div class="d-flex flex-column mb-3">
             <div class="me-auto p-2">
+                {% if comment.comment_html %}
+                {{ comment.comment_html|safe }}
+                {% else %}
                 {{ comment.comment }}
+                {% endif %}
             </div>
             <div class="ms-auto p-2">
                 <i class="fa-solid fa-calendar"></i> {{ comment.dateCreated|datetime_format }} &nbsp;
