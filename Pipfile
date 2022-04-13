@@ -16,6 +16,7 @@ isort = {extras = ["pipfile_deprecated_finder"], version = "*"}
 flask-pagedown = "*"
 markdown = "*"
 bleach = "*"
+python-slugify = "*"
 
 [dev-packages]
 
