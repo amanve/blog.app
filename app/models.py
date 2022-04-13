@@ -5,6 +5,7 @@ from markdown import markdown as md
 import bleach
 
 from app import db
+from slugify import slugify
 
 # Define models of used in the app
 roles_users = db.Table(
@@ -40,6 +41,7 @@ class Post(db.Model):
     subHeading = db.Column(db.String(100))
     body = db.Column(db.Text(), nullable=False)
     body_html = db.Column(db.Text)
+    slug_url = db.Column(db.String(25))
     dateCreated = db.Column(db.DateTime(), default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
@@ -56,8 +58,14 @@ class Post(db.Model):
                          tags=allowed_tags,
                          strip=True))
 
+    @staticmethod
+    def slugify(target, value, oldvalue, initiator):
+        if value and (not target.slug_url or value != oldvalue):
+            target.slug_url = slugify(value)
+
 
 db.event.listen(Post.body, 'set', Post.on_changed_body)
+db.event.listen(Post.heading, 'set', Post.slugify, retval=False)
 
 
 class Comments(db.Model):
