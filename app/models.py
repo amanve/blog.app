@@ -61,7 +61,7 @@ class Post(db.Model):
     @staticmethod
     def slugify(target, value, oldvalue, initiator):
         if value and (not target.slug_url or value != oldvalue):
-            target.slug_url = slugify(value)
+            target.slug_url = slugify(value, max_length=25)
 
 
 db.event.listen(Post.body, 'set', Post.on_changed_body)

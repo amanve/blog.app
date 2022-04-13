@@ -35,8 +35,8 @@ def index():
                            prev_url=prev_url)
 
 
-@main.route('/post/<post_id>', methods=['GET', 'POST'])
-def post(post_id):
+@main.route('/post/<post_id>/<slug_url>', methods=['GET', 'POST'])
+def post(post_id, slug_url):
     form = NewComment()
     post = Post.query.get(int(post_id))
     comments_page = request.args.get('comments_page', 1, type=int)
