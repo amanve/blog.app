@@ -49,7 +49,8 @@ def post(post_id, slug_url):
         post.comments.append(comment)
         db.session.commit()
 
-        return redirect(url_for('main.post', post_id=post.id))
+        return redirect(url_for('main.post', post_id=post.id,
+                                slug_url=slug_url))
 
     comments = Comments.query.filter_by(post_id=post_id).order_by(
         desc(Comments.dateCreated)).paginate(
