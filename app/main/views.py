@@ -91,28 +91,28 @@ def about():
     return render_template('about.html')
 
 
-@main.route('/contact', methods=['GET', 'POST'])
-def contact():
-    form = ContactUs()
+# @main.route('/contact', methods=['GET', 'POST'])
+# def contact():
+#     form = ContactUs()
 
-    if form.validate_on_submit():
-        name = request.form['name']
-        email = request.form['email']
-        telephone = request.form['telephone']
-        message = request.form['message']
-        res = pd.DataFrame({
-            'name': [name],
-            'email': [email],
-            'telephone': [telephone],
-            'message': [message],
-            'datetime': [datetime.strftime(datetime.now(), '''%d/%m/%y''')]
-        })
-        res.to_csv(current_app.config['CONTACT_MSG_PATH'],
-                   mode='a',
-                   index=False)
-        # Todo
-        """ Delete data as per datetime - need to figure out """
+#     if form.validate_on_submit():
+#         name = request.form['name']
+#         email = request.form['email']
+#         telephone = request.form['telephone']
+#         message = request.form['message']
+#         res = pd.DataFrame({
+#             'name': [name],
+#             'email': [email],
+#             'telephone': [telephone],
+#             'message': [message],
+#             'datetime': [datetime.strftime(datetime.now(), '''%d/%m/%y''')]
+#         })
+#         res.to_csv(current_app.config['CONTACT_MSG_PATH'],
+#                    mode='a',
+#                    index=False)
+#         # Todo
+#         """ Delete data as per datetime - need to figure out """
 
-        return redirect(url_for('main.contact'))
+#         return redirect(url_for('main.contact'))
 
-    return render_template('contact.html', form=form)
+#     return render_template('contact.html', form=form)
