@@ -1,0 +1,35 @@
+{% extends "login_base.html" %}
+
+{% block title %}Edit Post{% endblock %}
+
+{% block body %}
+{{ pagedown.include_pagedown() }}
+
+<div class="header">
+    <h1>Edit Post</h1>
+</div>
+<div>
+    <form action="" method="POST" role="form">
+        {{ form.csrf_token }}
+        <div class="d-grid gap-3">
+
+            <div class="form-group">
+                <label for="body">Body</label>
+                {{form.body(class="form-control",
+                placeholder="Enter Body Text")}}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+            <div class="col">
+                <div class="form-group">
+                    <a href="{{url_for('main.index')}}" class="btn btn-link pull-right">
+                        <span class="text-primary">Back to home</span> <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+{% endblock %}
