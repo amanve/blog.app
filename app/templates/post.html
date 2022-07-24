@@ -37,6 +37,12 @@
                 </div>
             </div>
         </div>
+
+        {% if current_user.active %}
+        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4"
+                href="{{url_for('main.edit',post_id=post.id, slug_url=post.slug_url)}}">Edit Post</a>
+        </li>
+        {% endif %}
     </article>
 
 
