@@ -4,20 +4,16 @@
 
 {% block body %}
 {{ pagedown.include_pagedown() }}
+<div class="container col-lg-6">
 
-<div class="header">
-    <h1>Edit Post</h1>
-</div>
-<div>
+    <h1 class="text-secondary text-md-center">Edit a post</h1>
     <form action="" method="POST" role="form">
         {{ form.csrf_token }}
         <div class="d-grid gap-3">
 
-            <div class="form-group">
-                <label for="body">Body</label>
-                {{form.body(class="form-control",
-                placeholder="Enter Body Text")}}
-            </div>
+            <label for="body">Body</label>
+            <input type="text" name="body" value={{ post.body }} placeholder="Body">
+            </input>
 
             <button type="submit" class="btn btn-primary">Submit</button>
 
@@ -31,5 +27,7 @@
         </div>
 
     </form>
+
 </div>
+
 {% endblock %}

@@ -2,7 +2,7 @@ from datetime import datetime
 
 import pandas as pd
 from app.main.forms import ContactUs, NewComment, NewPost
-from flask import current_app, redirect, render_template, request, url_for, flash
+from flask import current_app, redirect, render_template, request, url_for, flash, abort
 from flask_security import current_user, login_required
 from sqlalchemy import desc
 
@@ -118,24 +118,21 @@ def about():
 #     return render_template('contact.html', form=form)
 
 
-@main.route('/edit/<int:post_id>', methods=['GET', 'POST'])
+@main.route('/edit/<post_id>/<slug_url>', methods=['GET', 'POST'])
 @login_required
-def edit(post_id):
+def edit(post_id, slug_url):
+    post = Post.query.get_or_404(post_id)
     form = NewPost()
-    body_to_update = Post.query.get_or_404(post_id)
-    # if request.method == 'POST':
-    #     body_to_update.body = request.form['body']
-    #     try:
-    #         db.session.commit()
-    #         flash("Updated Successfully!!")
-    #         return redirect(url_for('.post', post_id=post.id))
-    #     except:
-    #         flash("Error occurred!")
-    #         return redirect(url_for('.post', post_id=post.id))
-    if form.validate_on_submit():
-        body_to_update.body = form.body.data
-        db.session.commit()
-        return redirect(url_for('.post', post_id=post.id))
+    if request.method == 'POST':
+        body = request.form['body']
+        post.body = body
 
-    form.body.data = body_to_update.body
-    return render_template('edit_post.html', form=form)
+        db.session.add(post)
+        db.session.commit()
+        flash("Post has been updated!")
+
+        return redirect(
+            url_for('.post', post_id=post.id, slug_url=post.slug_url))
+
+    form.body.data = post.body
+    return render_template('edit_post.html', form=form, post=post)
