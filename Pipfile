@@ -17,6 +17,8 @@ flask-pagedown = "*"
 markdown = "*"
 bleach = "*"
 python-slugify = "*"
+flask-restx = "*"
+flask-jwt-extended = "*"
 
 [dev-packages]
 
