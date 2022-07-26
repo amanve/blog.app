@@ -4,7 +4,6 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-flask = "*"
 flask-security = "*"
 flask-sqlalchemy = "*"
 flask-migrate = "*"
@@ -17,8 +16,9 @@ flask-pagedown = "*"
 markdown = "*"
 bleach = "*"
 python-slugify = "*"
-flask-restx = "*"
+flask-restx = ">=0.5.1"
 flask-jwt-extended = "*"
+flask = "==2.1.2"
 
 [dev-packages]
 
