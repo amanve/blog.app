@@ -5,8 +5,9 @@ from app.main.forms import ContactUs, NewComment, NewPost
 from flask import current_app, redirect, render_template, request, url_for, flash, abort
 from flask_security import current_user, login_required
 from sqlalchemy import desc
+from flask_restx import Resource
 
-from .. import db
+from .. import db, api
 from ..models import Comments, Post
 from . import main
 
@@ -136,3 +137,10 @@ def edit(post_id, slug_url):
 
     form.body.data = post.body
     return render_template('edit_post.html', form=form, post=post)
+
+
+@api.route('/hello')
+class HelloResource(Resource):
+
+    def get(self):
+        return {"message": "Hello World"}
